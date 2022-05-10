@@ -137,6 +137,14 @@ export default class GameOfLife extends Component {
         this.setState({ cells: this.makeCells() });
     }
 
+    toggleGameControl = () => {
+        if (this.state.isRunning) {
+            this.stopGame();
+        } else {
+            this.runGame();
+        }
+    }
+
     render() {
         const {cells} = this.state;
         return (
@@ -147,7 +155,7 @@ export default class GameOfLife extends Component {
                          height: this.rows * CELL_SIZE,
                          backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`
                      }}
-                     onClick={this.handleClick} ref={(n) => {
+                     onClick={this.toggleGameControl} ref={(n) => {
                     this.boardRef = n;
                 }}>
                     {
@@ -156,10 +164,12 @@ export default class GameOfLife extends Component {
                         ))
                     }
                 </div>
-                <div className="Controls"> Update every <input value={this.state.interval}
-                                                               onChange={this.handleIntervalChange}/> msec {this.state.isRunning ?
-                    <button className="button" onClick={this.stopGame}>Stop</button> :
-                    <button className="button" onClick={this.runGame}>Run</button>}
+                <div className="Controls">
+                    {
+                        this.state.isRunning ?
+                        <button className="button" onClick={this.stopGame}>Stop</button> :
+                        <button className="button" onClick={this.runGame}>Run</button>
+                    }
                     <button className="button" onClick={this.handleRandom}>Random</button>
                     <button className="button" onClick={this.handleClear}>Clear</button>
                 </div>
