@@ -1,6 +1,6 @@
 .Board {
     position: relative;
-    margin: 1rem auto;
+    margin: 0 auto;
     background-color: #000;
     background-image: linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px);
 }
@@ -10,6 +10,7 @@
     position: absolute;
 }
 
-.controls {
+.Controls {
     text-align: center;
+    margin-top: 1rem;
 }

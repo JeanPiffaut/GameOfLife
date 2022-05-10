@@ -7,9 +7,7 @@ export default class GameOfLife extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cells: [],
-            interval: 100,
-            isRunning: false
+            cells: [], interval: 100, isRunning: false
         };
 
         this.rows = this.props.size || CELL_SIZE;
@@ -45,8 +43,7 @@ export default class GameOfLife extends Component {
         const doc = document.documentElement;
 
         return {
-            x: (rect.left + window.pageXOffset) - doc.clientLeft,
-            y: (rect.top + window.pageYOffset) - doc.clientTop,
+            x: (rect.left + window.scrollX) - doc.clientLeft, y: (rect.top + window.scrollY) - doc.clientTop,
         };
     }
 
@@ -123,19 +120,28 @@ export default class GameOfLife extends Component {
 
     render() {
         const {cells} = this.state;
-        return (<div>
-            <div className="Board"
-                 style={{width: this.rows * CELL_SIZE, height: this.rows * CELL_SIZE, backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`}}
-                 onClick={this.handleClick} ref={(n) => {
-                this.boardRef = n;
-            }}>
-                {cells.map(cell => (<Cell x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`}/>))}
-            </div>
-            <div className="controls"> Update every <input value={this.state.interval}
-                                                           onChange={this.handleIntervalChange}/> msec {this.state.isRunning ?
-                <button className="button" onClick={this.stopGame}>Stop</button> :
-                <button className="button" onClick={this.runGame}>Run</button>}        </div>
-        </div>);
+        return (
+            <div className="Game">
+                <div className="Board"
+                     style={{
+                         width: this.rows * CELL_SIZE,
+                         height: this.rows * CELL_SIZE,
+                         backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`
+                     }}
+                     onClick={this.handleClick} ref={(n) => {
+                    this.boardRef = n;
+                }}>
+                    {
+                        cells.map(cell => (
+                            <Cell x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`}/>
+                        ))
+                    }
+                </div>
+                <div className="Controls"> Update every <input value={this.state.interval}
+                                                               onChange={this.handleIntervalChange}/> msec {this.state.isRunning ?
+                    <button className="button" onClick={this.stopGame}>Stop</button> :
+                    <button className="button" onClick={this.runGame}>Run</button>}        </div>
+            </div>);
     }
 }
 
