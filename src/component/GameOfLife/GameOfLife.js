@@ -1,7 +1,7 @@
 import {Component} from "react";
 import "./main.css";
 
-const CELL_SIZE = 20;
+const CELL_SIZE = 10;
 
 export default class GameOfLife extends Component {
     constructor(props) {
@@ -127,6 +127,16 @@ export default class GameOfLife extends Component {
         this.setState({ cells: this.makeCells() });
     }
 
+    handleRandom = () => {
+        for (let y = 0; y < this.rows; y++) {
+            for (let x = 0; x < this.cols; x++) {
+                this.board[y][x] = (Math.random() >= 0.5);
+            }
+        }
+
+        this.setState({ cells: this.makeCells() });
+    }
+
     render() {
         const {cells} = this.state;
         return (
@@ -150,6 +160,7 @@ export default class GameOfLife extends Component {
                                                                onChange={this.handleIntervalChange}/> msec {this.state.isRunning ?
                     <button className="button" onClick={this.stopGame}>Stop</button> :
                     <button className="button" onClick={this.runGame}>Run</button>}
+                    <button className="button" onClick={this.handleRandom}>Random</button>
                     <button className="button" onClick={this.handleClear}>Clear</button>
                 </div>
             </div>);
