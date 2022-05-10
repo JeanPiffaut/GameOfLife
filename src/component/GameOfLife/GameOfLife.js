@@ -70,6 +70,14 @@ export default class GameOfLife extends Component {
         this.setState({isRunning: true});
     }
 
+    stopGame = () => {
+        this.setState({isRunning: false});
+    }
+
+    handleIntervalChange = (event) => {
+        this.setState({interval: event.target.value});
+    }
+
     render() {
         const {cells} = this.state;
         return (<div>
@@ -80,6 +88,10 @@ export default class GameOfLife extends Component {
             }}>
                 {cells.map(cell => (<Cell x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`}/>))}
             </div>
+            <div className="controls"> Update every <input value={this.state.interval}
+                                                           onChange={this.handleIntervalChange}/> msec {this.state.isRunning ?
+                <button className="button" onClick={this.stopGame}>Stop</button> :
+                <button className="button" onClick={this.runGame}>Run</button>}        </div>
         </div>);
     }
 }
