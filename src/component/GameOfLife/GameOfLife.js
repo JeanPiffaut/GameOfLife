@@ -52,20 +52,6 @@ export default class GameOfLife extends Component {
         };
     }
 
-    handleClick = (event) => {
-        const elemOffset = this.getElementOffset();
-        const offsetX = event.clientX - elemOffset.x;
-        const offsetY = event.clientY - elemOffset.y;
-        const x = Math.floor(offsetX / CELL_SIZE);
-        const y = Math.floor(offsetY / CELL_SIZE);
-
-        if (x >= 0 && x <= this.cols && y >= 0 && y <= this.rows) {
-            this.board[y][x] = !this.board[y][x];
-        }
-
-        this.setState({cells: this.makeCells()});
-    }
-
     runGame = () => {
         this.setState({isRunning: true});
         this.runIteration();
@@ -117,10 +103,6 @@ export default class GameOfLife extends Component {
         }
 
         return neighbors;
-    }
-
-    handleIntervalChange = (event) => {
-        this.setState({interval: event.target.value});
     }
 
     handleClear = () => {
@@ -182,6 +164,28 @@ export default class GameOfLife extends Component {
                     </div>
                 </div>
             </div>);
+    }
+
+    handleClick = (event) => {
+        const elemOffset = this.getElementOffset();
+        const offsetX = event.clientX - elemOffset.x;
+        const offsetY = event.clientY - elemOffset.y;
+        const x = Math.floor(offsetX / CELL_SIZE);
+        const y = Math.floor(offsetY / CELL_SIZE);
+
+        if (x >= 0 && x <= this.cols && y >= 0 && y <= this.rows) {
+            this.board[y][x] = !this.board[y][x];
+        }
+
+        this.setState({cells: this.makeCells()});
+    }
+
+    /**
+     * @deprecated
+     * @param event
+     */
+    handleIntervalChange = (event) => {
+        this.setState({interval: event.target.value});
     }
 }
 
