@@ -1,3 +1,6 @@
+.Game {
+    position: relative;
+}
 .Board {
     position: relative;
     margin: 0 auto;
@@ -11,10 +14,19 @@
 }
 
 .Controls {
+    width: 100%;
+    position: absolute;
+    top: 0;
     text-align: center;
-    margin-top: 1rem;
 }
 
 .Controls.hidden {
     display: none;
+}
+
+.Controls .Buttons {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }

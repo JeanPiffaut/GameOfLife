@@ -2,13 +2,14 @@ import {Component} from "react";
 import "./main.css";
 
 const CELL_SIZE = 10;
+const GAME_INTERVAL = 100;
 
 export default class GameOfLife extends Component {
     constructor(props) {
         super(props);
         this.state = {
             cells: [],
-            interval: 100,
+            interval: this.props.interval || GAME_INTERVAL,
             isRunning: false
         };
 
@@ -51,20 +52,6 @@ export default class GameOfLife extends Component {
         };
     }
 
-    handleClick = (event) => {
-        const elemOffset = this.getElementOffset();
-        const offsetX = event.clientX - elemOffset.x;
-        const offsetY = event.clientY - elemOffset.y;
-        const x = Math.floor(offsetX / CELL_SIZE);
-        const y = Math.floor(offsetY / CELL_SIZE);
-
-        if (x >= 0 && x <= this.cols && y >= 0 && y <= this.rows) {
-            this.board[y][x] = !this.board[y][x];
-        }
-
-        this.setState({cells: this.makeCells()});
-    }
-
     runGame = () => {
         this.setState({isRunning: true});
         this.runIteration();
@@ -79,7 +66,7 @@ export default class GameOfLife extends Component {
     }
 
     runIteration() {
-        console.log('running iteration');
+        // console.log('running iteration');
         let newBoard = this.makeEmptyBoard();
 
         for (let y = 0; y < this.rows; y++) {
@@ -118,13 +105,9 @@ export default class GameOfLife extends Component {
         return neighbors;
     }
 
-    handleIntervalChange = (event) => {
-        this.setState({interval: event.target.value});
-    }
-
     handleClear = () => {
         this.board = this.makeEmptyBoard();
-        this.setState({ cells: this.makeCells() });
+        this.setState({cells: this.makeCells()});
     }
 
     handleRandom = () => {
@@ -134,10 +117,15 @@ export default class GameOfLife extends Component {
             }
         }
 
-        this.setState({ cells: this.makeCells() });
+        this.setState({cells: this.makeCells()});
+        this.runGame();
     }
 
-    toggleGameControl = () => {
+    toggleGameControl = (event) => {
+        if(event.target.className !== "Board" && event.target.className !== "Cell") {
+            return;
+        }
+
         if (this.state.isRunning) {
             this.stopGame();
         } else {
@@ -160,31 +148,55 @@ export default class GameOfLife extends Component {
                 }}>
                     {
                         cells.map(cell => (
-                            <Cell x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`}/>
+                            <Cell x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`} onClick={this.toggleGameControl}/>
                         ))
                     }
                 </div>
-                <div className={"Controls" + (this.state.isRunning ? "" : " hidden")}>
-                    {
-                        this.state.isRunning ?
-                        <button className="button" onClick={this.stopGame}>Stop</button> :
-                        <button className="button" onClick={this.runGame}>Run</button>
-                    }
-                    <button className="button" onClick={this.handleRandom}>Random</button>
-                    <button className="button" onClick={this.handleClear}>Clear</button>
+                <div className={"Controls" + (this.state.isRunning ? " hidden" : "")}
+                     onClick={this.toggleGameControl}
+                     style={{
+                         height: this.rows * CELL_SIZE,
+                         backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`
+                     }}>
+                    <div className="Buttons">
+                        <button className="button" onClick={this.handleRandom}>Random</button>
+                        <button className="button" onClick={this.handleClear}>Clear</button>
+                    </div>
                 </div>
             </div>);
+    }
+
+    handleClick = (event) => {
+        const elemOffset = this.getElementOffset();
+        const offsetX = event.clientX - elemOffset.x;
+        const offsetY = event.clientY - elemOffset.y;
+        const x = Math.floor(offsetX / CELL_SIZE);
+        const y = Math.floor(offsetY / CELL_SIZE);
+
+        if (x >= 0 && x <= this.cols && y >= 0 && y <= this.rows) {
+            this.board[y][x] = !this.board[y][x];
+        }
+
+        this.setState({cells: this.makeCells()});
+    }
+
+    /**
+     * @deprecated
+     * @param event
+     */
+    handleIntervalChange = (event) => {
+        this.setState({interval: event.target.value});
     }
 }
 
 class Cell extends Component {
     render() {
-        const {x, y} = this.props;
+        const {x, y, onClick} = this.props;
         return (<div className="Cell" style={{
             left: `${CELL_SIZE * x + 1}px`,
             top: `${CELL_SIZE * y + 1}px`,
             width: `${CELL_SIZE - 1}px`,
             height: `${CELL_SIZE - 1}px`,
-        }}/>);
+        }} onClick={onClick}/>);
     }
 }
