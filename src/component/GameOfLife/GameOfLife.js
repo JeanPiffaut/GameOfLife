@@ -8,14 +8,15 @@ const HEIGHT = 600;
 export default class GameOfLife extends Component {
     constructor(props) {
         super(props);
-        this.rows = HEIGHT / CELL_SIZE;
-        this.cols = WIDTH / CELL_SIZE;
-        this.board = this.makeEmptyBoard();
         this.state = {
             cells: [],
             interval: 100,
-            isRunning: false,
+            isRunning: false
         };
+
+        this.rows = HEIGHT / CELL_SIZE;
+        this.cols = WIDTH / CELL_SIZE;
+        this.board = this.makeEmptyBoard();
     }
 
     makeEmptyBoard() {
