@@ -139,7 +139,6 @@ export default class GameOfLife extends Component {
     }
 
     toggleGameControl = (event) => {
-        console.log(event.target.className);
         if(event.target.className !== "Board" && event.target.className !== "Cell") {
             return;
         }
@@ -176,11 +175,7 @@ export default class GameOfLife extends Component {
                          height: this.rows * CELL_SIZE,
                          backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`
                      }}>
-                    <div className="Buttons"
-                         style={{
-                            top: (this.rows * CELL_SIZE) / 2,
-                            backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`
-                        }}>
+                    <div className="Buttons">
                         <button className="button" onClick={this.handleRandom}>Random</button>
                         <button className="button" onClick={this.handleClear}>Clear</button>
                     </div>
