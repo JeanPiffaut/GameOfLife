@@ -164,7 +164,7 @@ export default class GameOfLife extends Component {
                         ))
                     }
                 </div>
-                <div className="Controls">
+                <div className={"Controls" + (this.state.isRunning ? "" : " hidden")}>
                     {
                         this.state.isRunning ?
                         <button className="button" onClick={this.stopGame}>Stop</button> :
