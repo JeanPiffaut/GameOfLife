@@ -2,8 +2,6 @@ import {Component} from "react";
 import "./main.css";
 
 const CELL_SIZE = 20;
-const WIDTH = 800;
-const HEIGHT = 600;
 
 export default class GameOfLife extends Component {
     constructor(props) {
@@ -14,8 +12,8 @@ export default class GameOfLife extends Component {
             isRunning: false
         };
 
-        this.rows = HEIGHT / CELL_SIZE;
-        this.cols = WIDTH / CELL_SIZE;
+        this.rows = this.props.size || CELL_SIZE;
+        this.cols = this.props.size || CELL_SIZE;
         this.board = this.makeEmptyBoard();
     }
 
@@ -127,7 +125,7 @@ export default class GameOfLife extends Component {
         const {cells} = this.state;
         return (<div>
             <div className="Board"
-                 style={{width: WIDTH, height: HEIGHT, backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`}}
+                 style={{width: this.rows * CELL_SIZE, height: this.rows * CELL_SIZE, backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`}}
                  onClick={this.handleClick} ref={(n) => {
                 this.boardRef = n;
             }}>
