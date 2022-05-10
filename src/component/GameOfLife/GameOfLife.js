@@ -122,14 +122,25 @@ export default class GameOfLife extends Component {
     }
 
     toggleGameControl = (event) => {
-        if(event.target.className !== "Board" && event.target.className !== "Cell") {
+        if(event.target.className !== "Board" && event.target.className !== "Cell" && event.target.className !== "Controls") {
             return;
         }
 
-        if (this.state.isRunning) {
-            this.stopGame();
-        } else {
-            this.runGame();
+        let game_start = false;
+        this.board.find((row) => {
+            row.find((cell) => {
+                if(cell === true) {
+                    game_start = true;
+                }
+            });
+        });
+
+        if(game_start) {
+            if (this.state.isRunning) {
+                this.stopGame();
+            } else {
+                this.runGame();
+            }
         }
     }
 
