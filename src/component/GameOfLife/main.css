@@ -11,10 +11,17 @@
 }
 
 .Controls {
+    width: 100%;
+    position: absolute;
+    top: 0;
     text-align: center;
-    margin-top: 1rem;
 }
 
 .Controls.hidden {
     display: none;
+}
+
+.Controls .Buttons {
+    width: 100%;
+    position: absolute;
 }

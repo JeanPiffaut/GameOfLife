@@ -79,7 +79,7 @@ export default class GameOfLife extends Component {
     }
 
     runIteration() {
-        console.log('running iteration');
+        // console.log('running iteration');
         let newBoard = this.makeEmptyBoard();
 
         for (let y = 0; y < this.rows; y++) {
@@ -124,7 +124,7 @@ export default class GameOfLife extends Component {
 
     handleClear = () => {
         this.board = this.makeEmptyBoard();
-        this.setState({ cells: this.makeCells() });
+        this.setState({cells: this.makeCells()});
     }
 
     handleRandom = () => {
@@ -134,10 +134,16 @@ export default class GameOfLife extends Component {
             }
         }
 
-        this.setState({ cells: this.makeCells() });
+        this.setState({cells: this.makeCells()});
+        this.runGame();
     }
 
-    toggleGameControl = () => {
+    toggleGameControl = (event) => {
+        console.log(event.target.className);
+        if(event.target.className !== "Board" && event.target.className !== "Cell") {
+            return;
+        }
+
         if (this.state.isRunning) {
             this.stopGame();
         } else {
@@ -160,18 +166,24 @@ export default class GameOfLife extends Component {
                 }}>
                     {
                         cells.map(cell => (
-                            <Cell x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`}/>
+                            <Cell x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`} onClick={this.toggleGameControl}/>
                         ))
                     }
                 </div>
-                <div className={"Controls" + (this.state.isRunning ? "" : " hidden")}>
-                    {
-                        this.state.isRunning ?
-                        <button className="button" onClick={this.stopGame}>Stop</button> :
-                        <button className="button" onClick={this.runGame}>Run</button>
-                    }
-                    <button className="button" onClick={this.handleRandom}>Random</button>
-                    <button className="button" onClick={this.handleClear}>Clear</button>
+                <div className={"Controls" + (this.state.isRunning ? " hidden" : "")}
+                     onClick={this.toggleGameControl}
+                     style={{
+                         height: this.rows * CELL_SIZE,
+                         backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`
+                     }}>
+                    <div className="Buttons"
+                         style={{
+                            top: (this.rows * CELL_SIZE) / 2,
+                            backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`
+                        }}>
+                        <button className="button" onClick={this.handleRandom}>Random</button>
+                        <button className="button" onClick={this.handleClear}>Clear</button>
+                    </div>
                 </div>
             </div>);
     }
@@ -179,12 +191,12 @@ export default class GameOfLife extends Component {
 
 class Cell extends Component {
     render() {
-        const {x, y} = this.props;
+        const {x, y, onClick} = this.props;
         return (<div className="Cell" style={{
             left: `${CELL_SIZE * x + 1}px`,
             top: `${CELL_SIZE * y + 1}px`,
             width: `${CELL_SIZE - 1}px`,
             height: `${CELL_SIZE - 1}px`,
-        }}/>);
+        }} onClick={onClick}/>);
     }
 }
