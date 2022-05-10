@@ -4,7 +4,7 @@ import GameOfLife from "./component/GameOfLife/GameOfLife";
 function App() {
   return (
     <div>
-      <GameOfLife size="20"/>
+      <GameOfLife />
     </div>
   );
 }

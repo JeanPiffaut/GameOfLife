@@ -7,11 +7,15 @@ export default class GameOfLife extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cells: [], interval: 100, isRunning: false
+            cells: [],
+            interval: 100,
+            isRunning: false
         };
 
-        this.rows = this.props.size || CELL_SIZE;
-        this.cols = this.props.size || CELL_SIZE;
+        const board_size = this.props.size || CELL_SIZE;
+
+        this.rows = board_size;
+        this.cols = board_size;
         this.board = this.makeEmptyBoard();
     }
 
