@@ -2,13 +2,14 @@ import {Component} from "react";
 import "./main.css";
 
 const CELL_SIZE = 10;
+const GAME_INTERVAL = 100;
 
 export default class GameOfLife extends Component {
     constructor(props) {
         super(props);
         this.state = {
             cells: [],
-            interval: 100,
+            interval: this.props.interval || GAME_INTERVAL,
             isRunning: false
         };
 
